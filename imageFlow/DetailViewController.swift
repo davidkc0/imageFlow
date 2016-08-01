@@ -10,38 +10,45 @@ import UIKit
 import Parse
 
 class DetailViewController: UIViewController {
-
+    
     
     @IBOutlet weak var detailImage: UIImageView!
     
-    var passedImageInDetailView = UIImage?()
+    var passedImageInDetailView: UIImage?
     
     var photoPassed : UIImageView = UIImageView()
     
     var post: PFObject!
     
+    
+    //PASS IMAGE FROM ImageViewController TO DetailView.
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         detailImage.image = passedImageInDetailView
-
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    //DOWNLOAD BACK TO LOCAL PHOTO LIBRARY.
+    @IBAction func save(sender: AnyObject) {
+        UIImageWriteToSavedPhotosAlbum(detailImage.image!, self, #selector(DetailViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    //PRESENT ALART WHEN IMAGE IS SAVED OR ERROR.
+    func image(image: UIImage, didFinishSavingWithError error: NSError?, contextInfo:UnsafePointer<Void>) {
+        if error == nil {
+            let ac = UIAlertController(title: "Saved!", message: "Image has been saved to your local photos.", preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        } else {
+            let ac = UIAlertController(title: "Save error", message: error?.localizedDescription, preferredStyle: .Alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+            presentViewController(ac, animated: true, completion: nil)
+        }
     }
-    */
-
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
 }

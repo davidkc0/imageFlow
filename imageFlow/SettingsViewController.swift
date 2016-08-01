@@ -14,29 +14,43 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var emailIdentifierLabel: UILabel!
     @IBAction func logOutAction(sender: AnyObject){
         
+        
+    }
+    
+    func logout() {
         // Send a request to log out a user
         PFUser.logOut()
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogInViewController") as! UIViewController
-            self.presentViewController(viewController, animated: true, completion: nil)
-        })
-        
+        //        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        let viewController: LogInViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogInViewController") as! LogInViewController
+        self.presentViewController(viewController, animated: true) {
+            print("login view controller up on screen now, pop settings view controller from stack behind it")
+            if let navigationController = self.navigationController {
+                let imageViewController = navigationController.viewControllers.first! as! ImageViewController
+                imageViewController.imageArray = []
+                imageViewController.cellView.reloadData()
+                navigationController.popViewControllerAnimated(false)
+            }
+          
+
+        }
+        //        })
+
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print(#function, self.navigationController)
+        
         // Show the current visitor's username
 //        if let pUserName = PFUser.currentUser()?["username"] as? String {
 //            self.emailIdentifierLabel.text = "@" + pUserName
 //            
 //        }
+        let logoutButton = UIBarButtonItem(barButtonSystemItem: .Action, target: self, action: Selector("logout"))
         
-        func didReceiveMemoryWarning() {
-            super.didReceiveMemoryWarning()
-            // Dispose of any resources that can be recreated.
-        }
-        
+        self.navigationItem.setRightBarButtonItem(logoutButton, animated: false)
         
         /*
          // MARK: - Navigation
@@ -49,4 +63,11 @@ class SettingsViewController: UIViewController {
          */
         
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    
 }
