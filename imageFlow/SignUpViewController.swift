@@ -16,25 +16,27 @@ class SignUpViewController: UIViewController {
     
     @IBAction func signUpAction(sender: AnyObject) {
         
-        var username = self.emailField.text
-        var password = self.passwordField.text
-        var finalEmail = username!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
+        let username = self.emailField.text
+        let password = self.passwordField.text
+        let finalEmail = username!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet())
         
         // Validate the text fields
         if (username?.utf16.count < 8) {
-            var alert = UIAlertView(title: "Invalid", message: "Please enter a valid email address", delegate: self, cancelButtonTitle: "OK")
-            alert.show()
+            let alert = UIAlertController(title: "Invalid", message: "Please enter a valid email address", preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
             
         } else if (password?.utf16.count) < 8 {
-            var alert = UIAlertView(title: "Invalid", message: "Password must be greater than 8 characters", delegate: self, cancelButtonTitle: "OK")
-            alert.show()
-            
+            let alert = UIAlertController(title: "Invalid", message: "Password must be greater than 8 characters", preferredStyle: .Alert)
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+
         } else {
             // Run a spinner to show a task in progress
-            var spinner: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(0, 0, 150, 150)) as UIActivityIndicatorView
+            let spinner: UIActivityIndicatorView = UIActivityIndicatorView(frame: CGRectMake(0, 0, 150, 150)) as UIActivityIndicatorView
             spinner.startAnimating()
             
-            var newUser = PFUser()
+            let newUser = PFUser()
             
             newUser.username = finalEmail
             newUser.password = password
@@ -48,16 +50,19 @@ class SignUpViewController: UIViewController {
                 // Stop the spinner
                 spinner.stopAnimating()
                 if ((error) != nil) {
-                    var alert = UIAlertView(title: "Error", message: "\(error)", delegate: self, cancelButtonTitle: "OK")
-                    alert.show()
+                    let alert = UIAlertController(title: "Error", message: "\(error)", preferredStyle: .Alert)
+                    let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+                    alert.addAction(cancelAction)
                     
                 } else {
-                    var alert = UIAlertView(title: "Success", message: "Signed Up", delegate: self, cancelButtonTitle: "OK")
-                    alert.show()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ImageViewController") as UIViewController
-                        self.presentViewController(viewController, animated: true, completion: nil)
+                    let alert = UIAlertController(title: "Success", message: "Signed Up", preferredStyle: .Alert)
+                    let OKAction = UIAlertAction(title: "OK", style: .Default, handler: { (UIAlertAction) in
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            let viewController:UIViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("ImageViewController") as UIViewController
+                            self.presentViewController(viewController, animated: true, completion: nil)
+                        })
                     })
+                    alert.addAction(OKAction)
                 }
             })
         }
@@ -68,21 +73,4 @@ class SignUpViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
