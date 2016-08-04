@@ -17,12 +17,9 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
     
 
     var refreshControl: UIRefreshControl!
-    
     var collectionViewLayout: CustomImageFlowLayout!
     var imageArray : [UIImage] = []
 
-    
-    
     @IBOutlet weak var cellView: UICollectionView!
     
     @IBAction func addImageButton(sender: AnyObject) {
@@ -34,12 +31,10 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
             
             self.presentViewController(imagePicker, animated: true, completion: nil)
         }
-        
     }
+    
 // ADD IMAGE.
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        
-        
         let imageData = UIImageJPEGRepresentation(image, 1.0)!
         let imageFile = PFFile(name: "image.jpg", data: imageData)!
         let image = PFObject(className: "Image")
@@ -48,24 +43,23 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
         image.saveInBackgroundWithBlock { (success, error) in
             
             if success {
-            let alert = UIAlertView(title: "Upload successful!", message: "" , delegate: self, cancelButtonTitle: "OK")
-                alert.show() }
-            else {
-                let alert = UIAlertView(title: "Upload Error", message: "Please try again." , delegate: self, cancelButtonTitle: "OK")
+                let alert = UIAlertController(title: "Upload successful!", message: "", preferredStyle: .Alert)
+                let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alert.addAction(OKAction)
+                
+            } else {
+                let alert = UIAlertController(title: "Upload Error", message: "Please try again.", preferredStyle: .Alert)
+                let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+                alert.addAction(OKAction)
+
             }
-            
             self.dismissViewControllerAnimated(true, completion: nil)
         }
-
-        
     }
-    
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -73,38 +67,16 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
         if PFUser.currentUser() == nil {
             let viewController: LogInViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("LogInViewController") as! LogInViewController
             self.presentViewController(viewController, animated: true, completion: nil)
-        }
-        else {
-            
+        } else {
             collectionViewLayout = CustomImageFlowLayout()
             cellView.collectionViewLayout = collectionViewLayout
             cellView.backgroundColor = .whiteColor()
-            
-            //pull to refresh
-//            refreshControl = UIRefreshControl()
-//            refreshControl.addTarget(self, action: #selector(ImageViewController.refresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
-//            cellView.addSubview(refreshControl)
-            
             self.loadArray()
             
         }
-        
-
     }
     
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-   
-    }
-    
-    
-    
-//    func refresh(sender:AnyObject) {
-//        loadArray()
-//    }
-   
-// LOAD IMAGE
+    // LOAD IMAGE
     func loadArray(){
         
         imageArray = []
@@ -131,24 +103,17 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
                             self.imageArray.append(image)
                             print("doublecheck: " + String(self.imageArray))
                         }
-//                        if self.refreshControl.refreshing
-//                        {
-//                            self.refreshControl.endRefreshing()
-//                        }
-
-                          self.cellView?.reloadData()
+                        
+                        self.cellView?.reloadData()
                         let targetIndexPath = NSIndexPath(forItem: self.imageArray.count-1, inSection: 0)
                         self.cellView?.reloadItemsAtIndexPaths([targetIndexPath])
                         
                     }
                 }
             }
-
         }
         print("iamgeArray print \(self.imageArray)")
     }
-    
-
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.imageArray.count
@@ -174,7 +139,7 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
     }
     
 
-//PASS IMAGE TO DETAIL VIEW.
+// PASS IMAGE TO DETAIL VIEW.
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toDetailView" {
@@ -191,25 +156,7 @@ UINavigationControllerDelegate, PFLogInViewControllerDelegate, PFSignUpViewContr
             destController.passedImageInDetailView = passedImage
         }
     }
-    
 
-    
-   
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func unwindToImageViewScreen(segue:UIStoryboardSegue) {
     }
     
