@@ -17,7 +17,6 @@
 		63F2240E1D409F07002C1AB5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 63F224031D409F07002C1AB5 /* Main.storyboard */; };
 		63F2240F1D409F07002C1AB5 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F224051D409F07002C1AB5 /* DetailViewController.swift */; };
 		63F224101D409F07002C1AB5 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F224071D409F07002C1AB5 /* ImageViewController.swift */; };
-		63F224111D409F07002C1AB5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 63F224081D409F07002C1AB5 /* Info.plist */; };
 		63F224121D409F07002C1AB5 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F224091D409F07002C1AB5 /* LogInViewController.swift */; };
 		63F224131D409F07002C1AB5 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F2240A1D409F07002C1AB5 /* SettingsViewController.swift */; };
 		63F224141D409F07002C1AB5 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63F2240B1D409F07002C1AB5 /* SignUpViewController.swift */; };
@@ -193,7 +192,6 @@
 				63F2240D1D409F07002C1AB5 /* LaunchScreen.storyboard in Resources */,
 				63F2240E1D409F07002C1AB5 /* Main.storyboard in Resources */,
 				63F224181D409F8B002C1AB5 /* Assets.xcassets in Resources */,
-				63F224111D409F07002C1AB5 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
